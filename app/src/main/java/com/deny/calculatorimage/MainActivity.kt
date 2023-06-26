@@ -97,13 +97,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun ActivityMainBinding.setUpObserver() {
         calculatorViewModel.apply {
-            resultLiveData.observe(this@MainActivity) { evaluationResult ->
+            resultEvaluateLiveData.observe(this@MainActivity) { evaluationResult ->
                 progressDialog.dismissAllowingStateLoss()
                 txtResult.text = "$evaluationResult"
                 validState(evaluationResult != null)
             }
 
-            resultInputLiveData.observe(this@MainActivity) { expression ->
+            resultrecognizeTextLiveData.observe(this@MainActivity) { expression ->
                 if (expression != null){
                     val parts = expression.split(Regex("[-+*/]"))
                     val operator = expression[parts[0].length].toString()

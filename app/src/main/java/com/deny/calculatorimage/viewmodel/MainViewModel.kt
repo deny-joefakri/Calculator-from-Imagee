@@ -23,11 +23,11 @@ class MainViewModel: ViewModel() {
 
     private val recognizer: TextRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
-    private val _resultLiveData: MutableLiveData<Double> = MutableLiveData()
-    val resultLiveData: LiveData<Double> = _resultLiveData
+    private val _resultEvaluateLiveData: MutableLiveData<Double> = MutableLiveData()
+    val resultEvaluateLiveData: LiveData<Double> = _resultEvaluateLiveData
 
-    private val _resultInputLiveData: MutableLiveData<String> = MutableLiveData()
-    val resultInputLiveData: LiveData<String> = _resultInputLiveData
+    private val _resultrecognizeTextLiveData: MutableLiveData<String> = MutableLiveData()
+    val resultrecognizeTextLiveData: LiveData<String> = _resultrecognizeTextLiveData
 
     val imageResultUri: MutableLiveData<Uri> = MutableLiveData()
 
@@ -39,16 +39,16 @@ class MainViewModel: ViewModel() {
                 if (result != null) {
                     val expression = result.first
                     val evaluationResult = evaluateExpression(expression)
-                    _resultInputLiveData.postValue(expression)
-                    _resultLiveData.postValue(evaluationResult)
+                    _resultrecognizeTextLiveData.postValue(expression)
+                    _resultEvaluateLiveData.postValue(evaluationResult)
                 } else {
-                    _resultInputLiveData.postValue(null)
-                    _resultLiveData.postValue(null)
+                    _resultrecognizeTextLiveData.postValue(null)
+                    _resultEvaluateLiveData.postValue(null)
                 }
             } catch (e: MlKitException) {
                 Log.e("CalculatorViewModel", "Text recognition error: ${e.localizedMessage}")
-                _resultInputLiveData.postValue(null)
-                _resultLiveData.postValue(null)
+                _resultrecognizeTextLiveData.postValue(null)
+                _resultEvaluateLiveData.postValue(null)
             }
         }
     }
