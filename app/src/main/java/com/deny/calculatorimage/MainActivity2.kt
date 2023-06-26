@@ -16,23 +16,29 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.deny.calculatorimage.databinding.ActivityMainBinding
 import com.deny.calculatorimage.dialog.ProgressDialog
+import com.deny.calculatorimage.permission.requestCameraPermission
+import com.deny.calculatorimage.permission.requestStoragePermission
 import com.deny.calculatorimage.util.ConverterUtil
 import com.deny.calculatorimage.util.PermissionUtil
 import com.deny.calculatorimage.viewmodel.MainViewModel
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.common.InputImage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity2 : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
 
-    private companion object {
-        private const val CAMERA_REQUEST_CODE = 100
-        private const val STORAGE_REQUEST_CODE = 101
+    companion object {
+        const val CAMERA_REQUEST_CODE = 100
+        const val STORAGE_REQUEST_CODE = 101
     }
 
 
@@ -125,9 +131,9 @@ class MainActivity2 : AppCompatActivity() {
 
         inputBtnImg.setOnClickListener {
             if (pickPictureFromFilesystem){
-                requestPermissionStorage()
+                permissionStorage()
             } else if (useBuiltinCamera){
-                requestPermissionCamera()
+                permissionCamera()
             }
         }
     }
@@ -209,20 +215,30 @@ class MainActivity2 : AppCompatActivity() {
         }
 
 
-    private fun requestPermissionStorage(){
-        if (PermissionUtil.checkStoragePermission(this)){
-            pickImageGallery()
-        } else {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_REQUEST_CODE)
+    private fun permissionStorage(){
+        lifecycleScope.launch {
+            val storagePermissionGranted = withContext(Dispatchers.Main) { this@MainActivity2.requestStoragePermission() }
+
+            if (storagePermissionGranted) {
+                pickImageGallery()
+            } else {
+                showRedSnackbar("Storage permission required....!")
+            }
         }
+
     }
 
-    private fun requestPermissionCamera(){
-        if (PermissionUtil.checkCameraPermission(this)){
-            pickImageCamera()
-        } else {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), CAMERA_REQUEST_CODE)
+    private fun permissionCamera(){
+        lifecycleScope.launch {
+            val cameraPermissionGranted = withContext(Dispatchers.Main) { this@MainActivity2.requestCameraPermission() }
+
+            if (cameraPermissionGranted) {
+                pickImageCamera()
+            } else {
+                showRedSnackbar("Camera and Storage permission required....!")
+            }
         }
+
     }
 
     override fun onRequestPermissionsResult(
