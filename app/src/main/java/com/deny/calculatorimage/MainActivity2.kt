@@ -5,16 +5,10 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Rect
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import android.view.Menu
 import android.view.View
-import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -22,10 +16,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.airbnb.lottie.LottieDrawable
 import com.deny.calculatorimage.databinding.ActivityMainBinding
 import com.deny.calculatorimage.dialog.ProgressDialog
 import com.deny.calculatorimage.util.ConverterUtil
+import com.deny.calculatorimage.util.PermissionUtil
 import com.deny.calculatorimage.viewmodel.MainViewModel
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.snackbar.Snackbar
@@ -41,9 +35,6 @@ class MainActivity2 : AppCompatActivity() {
         private const val STORAGE_REQUEST_CODE = 101
     }
 
-    private var imageUri : Uri ? = null
-    private lateinit var cameraPermissions : Array<String>
-    private lateinit var storagePermissions : Array<String>
 
     private val progressDialog by lazy { ProgressDialog() }
 
@@ -55,11 +46,8 @@ class MainActivity2 : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-
         calculatorViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
-        cameraPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        storagePermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
         binding.apply {
             initView()
@@ -71,7 +59,7 @@ class MainActivity2 : AppCompatActivity() {
     }
 
     private fun ActivityMainBinding.initView() {
-        if (imageUri == null){
+        if (calculatorViewModel.imageResultUri.value == null){
             animationView.isVisible = true
             animationView2.isGone = true
             viewResult.isGone = true
@@ -103,6 +91,7 @@ class MainActivity2 : AppCompatActivity() {
 
     }
 
+
     private fun ActivityMainBinding.setUpObserver() {
         calculatorViewModel.apply {
             resultLiveData.observe(this@MainActivity2) { evaluationResult ->
@@ -124,6 +113,9 @@ class MainActivity2 : AppCompatActivity() {
                 }
                 validState(expression != null)
             }
+
+            imageResultUri.observe(this@MainActivity2) { uri ->
+            }
         }
     }
 
@@ -133,18 +125,9 @@ class MainActivity2 : AppCompatActivity() {
 
         inputBtnImg.setOnClickListener {
             if (pickPictureFromFilesystem){
-                if (checkStoragePermission()){
-                    pickImageGallery()
-                } else {
-                    requestPermissionStorage()
-                }
+                requestPermissionStorage()
             } else if (useBuiltinCamera){
-                if (checkCameraPermission()){
-                    pickImageCamera()
-                }
-                else {
-                    requestPermissionCamera()
-                }
+                requestPermissionCamera()
             }
         }
     }
@@ -160,13 +143,22 @@ class MainActivity2 : AppCompatActivity() {
         txtError.text = "Failed recognize text or invalid expression"
     }
 
+    private fun ActivityMainBinding.setResultImage(){
+        imgView.setImageURI(calculatorViewModel.imageResultUri.value)
+        recognizeTextFromImage()
+        initView()
+    }
+
     private fun recognizeTextFromImage(){
         progressDialog.show(supportFragmentManager, ProgressDialog.DIALOG_TAG)
 
         try {
 
-            val inputImage = InputImage.fromFilePath(this, imageUri!!)
-            calculatorViewModel.processImage(inputImage)
+            calculatorViewModel.apply {
+                val inputImage = InputImage.fromFilePath(this@MainActivity2, imageResultUri.value!!)
+                processImage(inputImage)
+            }
+
 
         } catch (e:java.lang.Exception){
             showRedSnackbar("Failed prepare image due to ${e.message}")
@@ -185,58 +177,52 @@ class MainActivity2 : AppCompatActivity() {
 
             if (result.resultCode == Activity.RESULT_OK){
                 val data = result.data
-                imageUri = data!!.data
-                binding.apply {
-                    binding.imgView.setImageURI(imageUri)
-                    recognizeTextFromImage()
-                    initView()
-                }
+                calculatorViewModel.imageResultUri.value = data!!.data
+                binding.setResultImage()
             } else {
                 showRedSnackbar("Canceled...!")
             }
     }
 
     private fun pickImageCamera(){
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "Sample Title")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "Sample Description")
+        calculatorViewModel.apply {
+            val values = ContentValues()
+            values.put(MediaStore.Images.Media.TITLE, "Sample Title")
+            values.put(MediaStore.Images.Media.DESCRIPTION, "Sample Description")
 
-        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            imageResultUri.value = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
 
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-        cameraResultLauncher.launch(intent)
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageResultUri.value)
+            cameraResultLauncher.launch(intent)
+        }
+
     }
 
     private val cameraResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK){
-                binding.apply {
-                    imgView.setImageURI(imageUri)
-                    recognizeTextFromImage()
-                    initView()
-                }
-
+                binding.setResultImage()
             } else {
                 showRedSnackbar("Canceled...!")
             }
         }
 
-    private fun checkStoragePermission() : Boolean {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun checkCameraPermission() : Boolean {
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-    }
 
     private fun requestPermissionStorage(){
-        ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE)
+        if (PermissionUtil.checkStoragePermission(this)){
+            pickImageGallery()
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_REQUEST_CODE)
+        }
     }
 
     private fun requestPermissionCamera(){
-        ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE)
+        if (PermissionUtil.checkCameraPermission(this)){
+            pickImageCamera()
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE), CAMERA_REQUEST_CODE)
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -247,25 +233,17 @@ class MainActivity2 : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode){
             CAMERA_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty()){
-                    val cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    val storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED
-
-                    if (cameraAccepted && storageAccepted){
-                        pickImageCamera()
-                    } else {
-                        showRedSnackbar("Camera and Storage permission required....!")
-                    }
+                if (PermissionUtil.cameraRequestPermissionsResult(grantResults)){
+                    pickImageCamera()
+                } else {
+                    showRedSnackbar("Camera and Storage permission required....!")
                 }
             }
             STORAGE_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty()){
-                    val storarageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    if (storarageAccepted){
-                        pickImageGallery()
-                    } else {
-                        showRedSnackbar("Storage permission required....!")
-                    }
+                if (PermissionUtil.storageRequestPermissionsResult(grantResults)){
+                    pickImageGallery()
+                } else {
+                    showRedSnackbar("Storage permission required....!")
                 }
             }
         }

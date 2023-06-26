@@ -1,6 +1,7 @@
 package com.deny.calculatorimage.viewmodel
 
 import android.graphics.Rect
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,6 +28,8 @@ class MainViewModel: ViewModel() {
 
     private val _resultInputLiveData: MutableLiveData<String> = MutableLiveData()
     val resultInputLiveData: LiveData<String> = _resultInputLiveData
+
+    val imageResultUri: MutableLiveData<Uri> = MutableLiveData()
 
     fun processImage(image: InputImage) {
         viewModelScope.launch {
