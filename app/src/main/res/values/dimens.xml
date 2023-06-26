@@ -76,6 +76,9 @@
     <dimen name="mud_dimens_32dp">32dp</dimen>
     <dimen name="mud_dimens_36dp">36dp</dimen>
     <dimen name="mud_dimens_40dp">40dp</dimen>
+    <dimen name="mud_dimens_80dp">80dp</dimen>
+    <dimen name="mud_dimens_150dp">150dp</dimen>
+    <dimen name="mud_dimens_120dp">120dp</dimen>
     <dimen name="empty_state_icon_height">126dp</dimen>
     <dimen name="empty_state_icon_width">126dp</dimen>
 </resources>

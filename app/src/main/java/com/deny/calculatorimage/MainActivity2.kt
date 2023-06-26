@@ -2,7 +2,6 @@ package com.deny.calculatorimage
 
 import android.Manifest
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,6 +13,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -24,14 +24,12 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieDrawable
 import com.deny.calculatorimage.databinding.ActivityMainBinding
+import com.deny.calculatorimage.dialog.ProgressDialog
 import com.deny.calculatorimage.util.ConverterUtil
 import com.deny.calculatorimage.viewmodel.MainViewModel
 import com.google.android.material.shape.CornerFamily
+import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.text.Text
-import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.TextRecognizer
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 class MainActivity2 : AppCompatActivity() {
 
@@ -47,7 +45,7 @@ class MainActivity2 : AppCompatActivity() {
     private lateinit var cameraPermissions : Array<String>
     private lateinit var storagePermissions : Array<String>
 
-    private lateinit var progress : ProgressDialog
+    private val progressDialog by lazy { ProgressDialog() }
 
     private lateinit var calculatorViewModel: MainViewModel
 
@@ -62,39 +60,6 @@ class MainActivity2 : AppCompatActivity() {
 
         cameraPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         storagePermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-        progress = ProgressDialog(this)
-        progress.setTitle("Please wait")
-        progress.setCanceledOnTouchOutside(false)
-
-
-
-//        binding.recognizeBtnImg.setOnClickListener {
-//            if (imageUri == null){
-//                showToast("Pick Image First")
-//            } else {
-//                recognizeTextFromImage()
-//            }
-//        }
-
-
-
-
-//        if (BuildConfig.APP_THEME == "red") {
-//            // Apply red theme-specific behavior
-//            // ...
-//        } else if (BuildConfig.APP_THEME == "green") {
-//            // Apply green theme-specific behavior
-//            // ...
-//        }
-//
-//        if (BuildConfig.UI_FUNCTIONALITY == "pickPicture") {
-//            // Apply pick picture functionality-specific behavior
-//            // ...
-//        } else if (BuildConfig.UI_FUNCTIONALITY == "useCamera") {
-//            // Apply use camera functionality-specific behavior
-//            // ...
-//        }
 
         binding.apply {
             initView()
@@ -129,7 +94,7 @@ class MainActivity2 : AppCompatActivity() {
         val useBuiltinCamera = resources.getBoolean(R.bool.use_builtin_camera)
 
         if (pickPictureFromFilesystem){
-            inputBtnImg.icon = ContextCompat.getDrawable(this@MainActivity2, R.drawable.ic_baseline_image_24)
+            inputBtnImg.icon = ContextCompat.getDrawable(this@MainActivity2, R.drawable.baseline_attach_file_24)
         }
 
         if (useBuiltinCamera){
@@ -141,7 +106,7 @@ class MainActivity2 : AppCompatActivity() {
     private fun ActivityMainBinding.setUpObserver() {
         calculatorViewModel.apply {
             resultLiveData.observe(this@MainActivity2) { evaluationResult ->
-                progress.dismiss()
+                progressDialog.dismissAllowingStateLoss()
                 txtResult.text = "$evaluationResult"
                 validState(evaluationResult != null)
             }
@@ -196,37 +161,15 @@ class MainActivity2 : AppCompatActivity() {
     }
 
     private fun recognizeTextFromImage(){
-        progress.setMessage("Preparing Image")
-        progress.show()
+        progressDialog.show(supportFragmentManager, ProgressDialog.DIALOG_TAG)
 
         try {
 
             val inputImage = InputImage.fromFilePath(this, imageUri!!)
-            progress.setMessage("Recognizing Text")
-
             calculatorViewModel.processImage(inputImage)
 
-//            val textTaskResult = textTecognizer.process(inputImage)
-//                .addOnSuccessListener {
-//                    progress.dismiss()
-//                    Log.e("Catch", "Catch Text : ${it.text}")
-//                    val result = extractExpression(it)
-//                    if (result != null) {
-//                        val expression = result.first
-//                        //Log.e("Catch", "expression : ${expression}")
-//                        val evaluationResult = evaluateExpression(expression)
-//                        binding.edView.setText(" \nResult : $evaluationResult")
-//                    } else {
-//                        binding.edView.setText("No expression found.")
-//                    }
-//                }
-//                .addOnFailureListener {
-//                    progress.dismiss()
-//                    showToast("Failed recognize text due to ${it.message}")
-//                }
-
         } catch (e:java.lang.Exception){
-            showToast("Failed prepare image due to ${e.message}")
+            showRedSnackbar("Failed prepare image due to ${e.message}")
         }
     }
 
@@ -249,7 +192,7 @@ class MainActivity2 : AppCompatActivity() {
                     initView()
                 }
             } else {
-                showToast("Canceled...!")
+                showRedSnackbar("Canceled...!")
             }
     }
 
@@ -275,7 +218,7 @@ class MainActivity2 : AppCompatActivity() {
                 }
 
             } else {
-                showToast("Canceled...!")
+                showRedSnackbar("Canceled...!")
             }
         }
 
@@ -311,7 +254,7 @@ class MainActivity2 : AppCompatActivity() {
                     if (cameraAccepted && storageAccepted){
                         pickImageCamera()
                     } else {
-                        showToast("Camera and Storage permission required....!")
+                        showRedSnackbar("Camera and Storage permission required....!")
                     }
                 }
             }
@@ -321,7 +264,7 @@ class MainActivity2 : AppCompatActivity() {
                     if (storarageAccepted){
                         pickImageGallery()
                     } else {
-                        showToast("Storage permission required....!")
+                        showRedSnackbar("Storage permission required....!")
                     }
                 }
             }
@@ -329,8 +272,12 @@ class MainActivity2 : AppCompatActivity() {
     }
 
 
-
-    private fun showToast(message : String){
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    fun showRedSnackbar(message: String) {
+        val snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT)
+        val sbView = snackbar.view
+        sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.redDot))
+        val textView = sbView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+        textView.setTextColor(ContextCompat.getColor(this, R.color.white))
+        snackbar.show()
     }
 }

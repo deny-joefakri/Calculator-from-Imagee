@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_alert_dialog"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/mud_dimens_16dp">
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:layout_width="@dimen/mud_dimens_40dp"
+        android:layout_height="@dimen/mud_dimens_40dp"
+        android:indeterminate="true"
+        app:indicatorColor="?attr/colorPrimary" />
+
+    <TextView
+        android:id="@+id/txtMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/mud_dimens_8dp"
+        style="@style/TextAppearance.MudComponents.Body2"
+        android:text="Recognizing Text"
+        android:textColor="?attr/colorPrimary"/>
+
+</LinearLayout>

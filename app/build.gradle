@@ -112,50 +112,6 @@ android {
         }
     }
 
-    /*flavorDimensions "theme", "functionality"
-
-    // Define product flavors
-    productFlavors {
-        red {
-            dimension "theme"
-            buildConfigField "String", "APP_THEME", "\"red\""
-            resValue "string", "app_name", "Scan Me! Calculator (Red)"
-            manifestPlaceholders = [appIcon: "@mipmap/ic_launcher_red"]
-        }
-
-        green {
-            dimension "theme"
-            buildConfigField "String", "APP_THEME", "\"green\""
-            resValue "string", "app_name", "Scan Me! Calculator (Green)"
-            manifestPlaceholders = [appIcon: "@mipmap/ic_launcher_green"]
-        }
-
-        pickPicture {
-            dimension "functionality"
-            buildConfigField "String", "UI_FUNCTIONALITY", "\"pickPicture\""
-        }
-
-        useCamera {
-            dimension "functionality"
-            buildConfigField "String", "UI_FUNCTIONALITY", "\"useCamera\""
-        }
-    }
-
-    // Configure flavor-specific resources
-    sourceSets {
-        red {
-            res.srcDirs = ['src/red/res']
-        }
-        green {
-            res.srcDirs = ['src/green/res']
-        }
-        pickPicture {
-            res.srcDirs = ['src/pickPicture/res']
-        }
-        useCamera {
-            res.srcDirs = ['src/useCamera/res']
-        }
-    }*/
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
