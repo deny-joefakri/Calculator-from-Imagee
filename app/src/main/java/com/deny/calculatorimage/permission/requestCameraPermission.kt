@@ -5,11 +5,10 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.deny.calculatorimage.MainActivity2.Companion.CAMERA_REQUEST_CODE
+import com.deny.calculatorimage.MainActivity.Companion.CAMERA_REQUEST_CODE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.resume
 
 suspend fun AppCompatActivity.requestCameraPermission(): Boolean = withContext(Dispatchers.Main) {
     val permissionCamera = Manifest.permission.CAMERA
