@@ -1,10 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="theme_red">#C84949</color>
+    <color name="theme_green">#5B8A5B</color>
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="primaryBlue">#002DBB</color>
+    <color name="primaryBlue25">#40002DBB</color>
+    <color name="blueDark">#00124a</color>
+
+    <color name="prepaidTurquoise">#00D2A0</color>
+    <color name="prioGold">#C8AF65</color>
+    <color name="prioGoldSoft">#F9F7EF</color>
+    <color name="prioLightGrey">#B4B5B2</color>
+    <color name="prioDarkGrey">#878B88</color>
+
+    <color name="black">#000000</color>
+    <color name="basicBlack">#131313</color>
+    <color name="basicRed">#c40d42</color>
+    <color name="basicWhite">#FFFFFF</color>
+    <color name="basicLightGrey">#E2E2E2</color>
+    <color name="basicMediumGrey">#8C96A2</color>
+    <color name="basicDarkGrey">#68788A</color>
+    <color name="basicOrange">#D09D5A</color>
+    <color name="basicBlue">#354890</color>
+
+    <color name="iceBlue">#f2f8ff</color>
+    <color name="blueGrey">#5d738b</color>
+    <color name="blueSoft">#ccd5f1</color>
+
+    <color name="goldDark">#504628</color>
+    <color name="goldSoft">#f4efe0</color>
+
+    <color name="yellowDark">#654a14</color>
+    <color name="yellowNormal">#fdb934</color>
+    <color name="yellowSoft">#fef1d6</color>
+
+    <color name="redDark">#4e051a</color>
+    <color name="redSoft">#f3ced9</color>
+
+    <color name="turquoiseDark">#005440</color>
+    <color name="turquoiseSoft">#ccf6ec</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="blueGradientStart">#0E1D80</color>
+    <color name="blueGradientEnd">#225DCB</color>
+
+    <color name="redDot">#e01f1f</color>
+
+    <color name="disabled">#9e9e9e</color>
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#9e9e9e</color>
+
+    <color name="greySuit">#8E8E93</color>
+    <color name="yellowSuit">#F8CB79</color>
+    <color name="brownSuit">#9E5F2B</color>
+
+    <color name="cardCheckMark_success">#11AE00</color>
+    <color name="cardCheckMark_active">#C8AF65</color>
+    <color name="cardLine_active">#DFE6F3</color>
+
+    <color name="progress_disabeled">#e1d7b5</color>
+
+    <color name="ic_right_arrow_bg_enabeled">#f7f8fc</color>
+    <color name="ic_right_arrow_bg_disabeled">#f7f7f7</color>
+    <color name="ic_right_arrow_fg_disabeled">#a9a9a9</color>
+    <color name="white_20_percent_density">#32FFFFFF</color>
 </resources>

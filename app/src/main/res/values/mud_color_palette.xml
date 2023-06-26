@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <color name="mud_palette_primary_blue">#002DBB</color>
+    <color name="mud_palette_blue_dark">#00124a</color>
+
+    <color name="mud_palette_prepaid_turquoise">#00D2A0</color>
+    <color name="mud_palette_prio_gold">#C8AF65</color>
+    <color name="mud_palette_prio_light_grey">#B4B5B2</color>
+    <color name="mud_palette_prio_dark_grey">#878B88</color>
+
+    <color name="mud_palette_default_bizon">#B9D7FC</color>
+    <color name="mud_palette_default_bizon_two">#2A68D8</color>
+    <color name="mud_palette_default_bizon_three">#1915CB</color>
+    <color name="mud_palette_default_bizon_four">#00DC97</color>
+
+    <color name="mud_palette_solid_black">#000000</color>
+    <color name="mud_palette_basic_black">#131313</color>
+    <color name="mud_palette_basic_red">#c40d42</color>
+    <color name="mud_palette_basic_white">#FFFFFF</color>
+    <color name="mud_palette_basic_light_grey">#E2E2E2</color>
+    <color name="mud_palette_basic_light_grey_low_opacity">#59E2E2E2</color>
+    <color name="mud_palette_basic_medium_grey">#8C96A2</color>
+    <color name="mud_palette_basic_dark_grey">#68788A</color>
+    <color name="mud_palette_basic_alto">#D1D1D1</color>
+
+    <color name="mud_palette_basic_green">#11ae00</color>
+    <color name="mud_pallete_basic_blue">#005cd2</color>
+    <color name="mud_pallete_dark_blue">#041558</color>
+
+    <color name="mud_palette_transparent_white">#44FFFFFF</color>
+
+    <color name="mud_palette_ice_blue">#f2f8ff</color>
+    <color name="mud_palette_pale_blue">#f0f3fe</color>
+    <color name="mud_palette_blue_grey">#5d738b</color>
+    <color name="mud_palette_blue_soft">#ccd5f1</color>
+
+    <color name="mud_palette_gold_dark">#504628</color>
+    <color name="mud_palette_gold_soft">#f4efe0</color>
+
+    <color name="mud_palette_yellow_dark">#654a14</color>
+    <color name="mud_palette_yellow_normal">#fdb934</color>
+    <color name="mud_palette_yellow_soft">#fef1d6</color>
+    <color name="mud_palette_yellow_pale">#f9f7ef</color>
+
+    <color name="mud_palette_red_dark">#4e051a</color>
+    <color name="mud_palette_red_soft">#f3ced9</color>
+
+    <color name="mud_palette_turquoise_dark">#005440</color>
+    <color name="mud_palette_turquoise_soft">#ccf6ec</color>
+
+    <color name="mud_palette_aquamarine">#00d2a1</color>
+    <color name="mud_package_status_green">#11ae00</color>
+
+    <color name="mud_palette_home_primary">#1D90C9</color>
+    <color name="mud_palette_home_chevron_background">#ECF9FF</color>
+    <color name="mud_palette_home_super_soft">#ecf9ff</color>
+    <color name="mud_pallete_prio_super_soft">#efefef</color>
+
+    <color name="mud_palette_dark_blue">#18448A</color>
+    <color name="mud_palette_light_blue">#20C4F4</color>
+
+    <color name="mud_palette_light_dark_blue">#225DCB</color>
+    <color name="mud_palette_primary_dark_blue">#0E1D80</color>
+
+
+    <color name="mud_palette_dark_yellow">#E2972C</color>
+    <color name="mud_palette_normal_yellow">#E49C10</color>
+    <color name="mud_palette_xl_orange">#EF9821</color>
+
+    <color name="mud_palette_xl_pink">#EE3D96</color>
+
+    <color name="mud_palette_blue_green">#0A9997</color>
+    <color name="mud_palette_darker_blue_green">#079390</color>
+    <color name="mud_palette_dark_blue_green">#168A98</color>
+
+    <color name="mud_palette_blue_green_center_home">#155B8E</color>
+
+    <color name="mud_palette_medium_pink">#ee3e80</color>
+
+    <color name="mud_palette_prepaid_dark_blue">#011B70</color>
+    <color name="mud_palette_prepaid_orange">#EE4D2D</color>
+    
+    <color name="mud_palette_prepaid_background">#F0F3FE</color>
+
+    <color name="mud_palette_akrab_chinese_purple">#6C13A3</color>
+    <color name="mud_palette_akrab_gamboge_orange">#E49C10</color>
+    <color name="mud_palette_akrab_royal_pink">#EE3D96</color>
+    <color name="mud_palette_akrab_sprio_disco_ball_blue">#20C4F4</color>
+    <color name="mud_palette_akrab_ua_blue">#002DBB</color>
+</resources>

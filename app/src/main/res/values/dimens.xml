@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- PADDING -->
+    <dimen name="hPadding">24dp</dimen>
+
+    <!-- FONT SIZE -->
+    <dimen name="textHeroSize">32sp</dimen>
+    <dimen name="textHeroLineHeight">44sp</dimen>
+
+    <dimen name="textH1Size">28sp</dimen>
+    <dimen name="textH1LineHeight">36sp</dimen>
+
+    <dimen name="textGreetingsSize">28sp</dimen>
+    <dimen name="textGreetingsLineHeight">36sp</dimen>
+
+    <dimen name="textH2Size">24sp</dimen>
+    <dimen name="textH2LineHeight">32sp</dimen>
+
+    <dimen name="textH3Size">20sp</dimen>
+    <dimen name="textH3LineHeight">28sp</dimen>
+
+    <dimen name="textH4Size">18sp</dimen>
+    <dimen name="textH4LineHeight">24sp</dimen>
+
+    <dimen name="textH5Size">@dimen/textBody2Size</dimen>
+    <dimen name="textH5LineHeight">@dimen/textBody2LineHeight</dimen>
+
+    <dimen name="textH6Size">@dimen/textBody3Size</dimen>
+    <dimen name="textH6LineHeight">@dimen/textBody3LineHeight</dimen>
+
+    <dimen name="textBody1Size">16sp</dimen>
+    <dimen name="textBody1LineHeight">26sp</dimen>
+
+    <dimen name="textBody2Size">14sp</dimen>
+    <dimen name="textBody2LineHeight">22sp</dimen>
+
+    <dimen name="textBody3Size">12sp</dimen>
+    <dimen name="textBody3LineHeight">20sp</dimen>
+
+    <dimen name="textBody4Size">8sp</dimen>
+    <dimen name="textBody4LineHeight">10sp</dimen>
+
+    <dimen name="textLinkSize">@dimen/textBody2Size</dimen>
+    <dimen name="textLinkLineHeight">@dimen/textBody2LineHeight</dimen>
+
+    <dimen name="textQuotaSummaryItemUnlimitedSize">11sp</dimen>
+    <dimen name="textQuotaSummaryItemRemainingSize">12sp</dimen>
+
+    <!-- BUTTON SIZE -->
+    <dimen name="buttonHeight">44dp</dimen>
+    <dimen name="buttonPadding">24dp</dimen>
+
+    <dimen name="buttonCompactStroke">2dp</dimen>
+
+    <!-- TEXT FIELD SIZE -->
+    <dimen name="textFieldMinHeight">58dp</dimen>
+    <dimen name="textFieldPadding">16dp</dimen>
+    <dimen name="textFieldRadius">12dp</dimen>
+
+
+
+    <!-- Dimens -->
+    <dimen name="mud_dimens_0dp">0dp</dimen>
+    <dimen name="mud_dimens_1dp">1dp</dimen>
+    <dimen name="mud_dimens_2dp">2dp</dimen>
+    <dimen name="mud_dimens_3dp">3dp</dimen>
+    <dimen name="mud_dimens_4dp">4dp</dimen>
+    <dimen name="mud_dimens_6dp">6dp</dimen>
+    <dimen name="mud_dimens_8dp">8dp</dimen>
+    <dimen name="mud_dimens_12dp">12dp</dimen>
+    <dimen name="mud_dimens_16dp">16dp</dimen>
+    <dimen name="mud_dimens_20dp">20dp</dimen>
+    <dimen name="mud_dimens_24dp">24dp</dimen>
+    <dimen name="mud_dimens_28dp">28dp</dimen>
+    <dimen name="mud_dimens_32dp">32dp</dimen>
+    <dimen name="mud_dimens_36dp">36dp</dimen>
+    <dimen name="mud_dimens_40dp">40dp</dimen>
+    <dimen name="empty_state_icon_height">126dp</dimen>
+    <dimen name="empty_state_icon_width">126dp</dimen>
+</resources>

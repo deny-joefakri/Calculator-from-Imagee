@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="16dp"
+    app:cardElevation="@dimen/mud_dimens_0dp"
+    app:cardCornerRadius="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/mud_dimens_4dp"
+        android:paddingHorizontal="@dimen/mud_dimens_8dp"
+        android:background="@drawable/bg_warning"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="@dimen/mud_dimens_16dp"
+            android:layout_height="@dimen/mud_dimens_16dp"
+            android:src="@drawable/baseline_info_24"
+            app:tint="@color/white"
+            android:layout_marginRight="@dimen/mud_dimens_8dp"
+            />
+        <TextView
+            android:id="@+id/informationView"
+            android:layout_width="wrap_content"
+            android:textAppearance="@style/TextAppearance.MudComponents.Body3"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="@dimen/mud_dimens_6dp"
+            android:textColor="@color/white"
+            android:text="this app only support this expression : + - * x / :"
+            />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

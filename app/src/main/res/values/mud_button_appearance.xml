@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="RoundedButton" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50dp</item>
+    </style>
+
+    <style name="SharpButton" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">0dp</item>
+    </style>
+
+
+    <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:textAppearance">@style/TextAppearance.MudComponents.H5</item>
+        <item name="android:height">52dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="shapeAppearance">@style/RoundedButton</item>
+        <item name="iconGravity">end</item>
+        <item name="iconStartPadding">8dp</item>
+
+        <item name="rippleColor">@color/mud_palette_blue_soft</item>
+        <item name="backgroundTint">@color/primary_button_color</item>
+        <item name="android:textColor">@color/primary_button_text_color</item>
+        <item name="iconTint">@color/primary_button_icon_color</item>
+    </style>
+
+    <style name="ButtonAppearance.MudComponents.BoxPrimary" parent="ButtonPrimary">
+        <item name="shapeAppearance">@style/SharpButton</item>
+        <item name="backgroundTint">@color/box_button_color</item>
+        <item name="android:textColor">@color/box_button_text_color</item>
+        <item name="iconTint">@color/box_button_icon_color</item>
+    </style>
+
+    <style name="ButtonSecondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textAppearance">@style/TextAppearance.MudComponents.H5</item>
+        <item name="android:height">52dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="shapeAppearance">@style/RoundedButton</item>
+        <item name="iconGravity">end</item>
+        <item name="iconStartPadding">8dp</item>
+        <item name="rippleColor">@color/mud_palette_basic_white</item>
+
+        <item name="android:textColor">@color/secondary_button_text_color</item>
+        <item name="iconTint">@color/secondary_button_icon_color</item>
+        <item name="strokeColor">@color/secondary_outlined_button_color</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="ButtonAppearance.MudComponents.Primary" parent="ButtonPrimary"/>
+
+    <style name="ButtonPrimaryTransparent" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:textAppearance">@style/TextAppearance.MudComponents.H5</item>
+        <item name="android:height">52dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="shapeAppearance">@style/RoundedButton</item>
+        <item name="iconGravity">end</item>
+        <item name="iconStartPadding">8dp</item>
+
+        <item name="rippleColor">@color/basicBlack</item>
+        <item name="backgroundTint">@color/basicBlack</item>
+        <item name="android:textColor">@color/basicBlack</item>
+        <item name="iconTint">@color/basicBlack</item>
+    </style>
+
+    <style name="ButtonAppearance.MudComponents.PrimaryTransparent" parent="ButtonPrimaryTransparent"/>
+
+    <style name="ButtonAppearance.MudComponents.FlatPrimary" parent="ButtonPrimary">
+        <item name="android:textAppearance">@style/TextAppearance.MudComponents.H6</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:height">40dp</item>
+    </style>
+
+    <style name="ButtonAppearance.MudComponents.FlatPrimaryWithoutInset" parent="ButtonPrimary">
+        <item name="android:textAppearance">@style/TextAppearance.MudComponents.H6</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:height">@dimen/mud_dimens_28dp</item>
+        <item name="android:insetTop">@dimen/mud_dimens_0dp</item>
+        <item name="android:insetBottom">@dimen/mud_dimens_0dp</item>
+    </style>
+
+    <style name="ButtonAppearance.MudComponents.Primary.Iconed" parent="ButtonAppearance.MudComponents.Primary">
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
+    <style name="ButtonAppearance.MudComponents.Secondary" parent="ButtonSecondary"></style>
+
+    <style name="ButtonAppearance.MudComponents.Secondary.Black" parent="ButtonAppearance.MudComponents.Secondary">
+        <item name="strokeColor">@color/mud_palette_basic_black</item>
+        <item name="android:textColor">@color/mud_palette_basic_black</item>
+        <item name="iconTint">@color/mud_palette_basic_black</item>
+    </style>
+
+    <style name="ButtonAppearance.MudComponents.Secondary.Red" parent="ButtonAppearance.MudComponents.Secondary">
+        <item name="strokeColor">@color/primary_red_button_color</item>
+        <item name="android:textColor">@color/primary_red_button_color</item>
+        <item name="iconTint">@color/mud_palette_basic_white</item>
+    </style>
+
+</resources>

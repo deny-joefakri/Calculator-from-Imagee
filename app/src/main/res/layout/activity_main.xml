@@ -4,70 +4,177 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/basicBlue">
 
     <LinearLayout
-        android:id="@+id/viewBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/inputBtnImg"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
             android:layout_weight="1"
-            app:icon="@drawable/ic_baseline_add_a_photo_24"
-            android:text="Take Image"
-            android:layout_marginEnd="5dp">
+            app:cardCornerRadius="@dimen/mud_dimens_24dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardUseCompatPadding="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:lottie_rawRes="@raw/calculator"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_repeatMode="reverse"/>
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:lottie_rawRes="@raw/calculator_only_title"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_repeatMode="reverse"
+                    android:visibility="gone"/>
 
-        </com.google.android.material.button.MaterialButton>
+                <include android:id="@+id/viewWarning"
+                    layout="@layout/view_warning_card"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/recognizeBtnImg"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:icon="@drawable/ic_baseline_document_scanner_24"
-            android:text="Recognize Text"
-            android:layout_marginStart="5dp">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/viewResult"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/mud_dimens_16dp"
+            android:layout_marginEnd="@dimen/mud_dimens_16dp"
+            android:layout_marginBottom="@dimen/mud_dimens_16dp"
+            android:layout_weight="5"
+            app:cardCornerRadius="@dimen/mud_dimens_24dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/mud_dimens_24dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:strokeWidth="2dp"
+                    android:src="@drawable/ic_baseline_image_24"
+                    android:adjustViewBounds="true"/>
+                <TextView
+                    android:id="@+id/txtError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/mud_dimens_16dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/mud_dimens_16dp"
+                    style="@style/TextAppearance.MudComponents.H5"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:background="@drawable/bg_form_error"
+                    android:visibility="gone"/>
+                <LinearLayout
+                    android:id="@+id/viewValid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/mud_dimens_16dp"
+                    android:gravity="center_horizontal"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/txtChar1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/mud_dimens_16dp"
+                        android:layout_marginEnd="@dimen/mud_dimens_16dp"
+                        style="@style/TextAppearance.MudComponents.H3"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:background="@drawable/bg_form"/>
 
-        </com.google.android.material.button.MaterialButton>
+                    <TextView
+                        android:id="@+id/txtExpression"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/mud_dimens_16dp"
+                        android:layout_marginEnd="@dimen/mud_dimens_16dp"
+                        style="@style/TextAppearance.MudComponents.H3"
+                        android:text="1"
+                        android:textColor="@color/theme_green"
+                        android:background="@drawable/bg_form_expression"/>
+                    <TextView
+                        android:id="@+id/txtChar2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/mud_dimens_16dp"
+                        style="@style/TextAppearance.MudComponents.H3"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:background="@drawable/bg_form"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/mud_dimens_16dp"
+                        style="@style/TextAppearance.MudComponents.H3"
+                        android:text="="
+                        android:textSize="@dimen/mud_dimens_24dp"
+                        android:textColor="@color/theme_green"/>
+
+                    <TextView
+                        android:id="@+id/txtResult"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/mud_dimens_16dp"
+                        style="@style/TextAppearance.MudComponents.H3"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:background="@drawable/bg_form_result"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/viewHeaderBtn"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            app:cardBackgroundColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:cardCornerRadius="4dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/inputBtnImg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/mud_dimens_24dp"
+                android:layout_marginEnd="@dimen/mud_dimens_24dp"
+                style="@style/ButtonAppearance.MudComponents.Primary"
+                android:text="@string/button_name"
+                android:layout_gravity="center">
+
+            </com.google.android.material.button.MaterialButton>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/viewBtn">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:strokeWidth="2dp"
-                android:src="@drawable/ic_baseline_image_24"
-                android:adjustViewBounds="true"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Recognize Text">
-            </TextView>
-
-            <EditText
-                android:id="@+id/edView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"/>
-        </LinearLayout>
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

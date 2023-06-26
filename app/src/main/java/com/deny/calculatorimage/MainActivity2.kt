@@ -12,15 +12,21 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
+import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import com.airbnb.lottie.LottieDrawable
 import com.deny.calculatorimage.databinding.ActivityMainBinding
+import com.deny.calculatorimage.util.ConverterUtil
 import com.deny.calculatorimage.viewmodel.MainViewModel
+import com.google.android.material.shape.CornerFamily
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
@@ -51,6 +57,7 @@ class MainActivity2 : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+
         calculatorViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         cameraPermissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -61,22 +68,131 @@ class MainActivity2 : AppCompatActivity() {
         progress.setCanceledOnTouchOutside(false)
 
 
-        binding.inputBtnImg.setOnClickListener {
-            showInputImageDialog()
+
+//        binding.recognizeBtnImg.setOnClickListener {
+//            if (imageUri == null){
+//                showToast("Pick Image First")
+//            } else {
+//                recognizeTextFromImage()
+//            }
+//        }
+
+
+
+
+//        if (BuildConfig.APP_THEME == "red") {
+//            // Apply red theme-specific behavior
+//            // ...
+//        } else if (BuildConfig.APP_THEME == "green") {
+//            // Apply green theme-specific behavior
+//            // ...
+//        }
+//
+//        if (BuildConfig.UI_FUNCTIONALITY == "pickPicture") {
+//            // Apply pick picture functionality-specific behavior
+//            // ...
+//        } else if (BuildConfig.UI_FUNCTIONALITY == "useCamera") {
+//            // Apply use camera functionality-specific behavior
+//            // ...
+//        }
+
+        binding.apply {
+            initView()
+            setUpObserver()
+            setUpListener()
         }
 
-        binding.recognizeBtnImg.setOnClickListener {
-            if (imageUri == null){
-                showToast("Pick Image First")
-            } else {
-                recognizeTextFromImage()
+
+    }
+
+    private fun ActivityMainBinding.initView() {
+        if (imageUri == null){
+            animationView.isVisible = true
+            animationView2.isGone = true
+            viewResult.isGone = true
+        } else {
+            animationView.isGone = true
+            animationView2.isVisible = true
+            viewResult.isVisible = true
+        }
+
+        viewHeaderBtn.apply {
+            shapeAppearanceModel = shapeAppearanceModel.toBuilder()
+                .setTopLeftCorner(CornerFamily.ROUNDED, ConverterUtil.dpToPx(context, 24f))
+                .setTopRightCorner(CornerFamily.ROUNDED, ConverterUtil.dpToPx(context, 24f))
+                .setBottomLeftCorner(CornerFamily.ROUNDED, ConverterUtil.dpToPx(context, 0f))
+                .setBottomRightCorner(CornerFamily.ROUNDED, ConverterUtil.dpToPx(context, 0f))
+                .build()
+        }
+
+        val pickPictureFromFilesystem = resources.getBoolean(R.bool.pick_picture_from_filesystem)
+        val useBuiltinCamera = resources.getBoolean(R.bool.use_builtin_camera)
+
+        if (pickPictureFromFilesystem){
+            inputBtnImg.icon = ContextCompat.getDrawable(this@MainActivity2, R.drawable.ic_baseline_image_24)
+        }
+
+        if (useBuiltinCamera){
+            inputBtnImg.icon = ContextCompat.getDrawable(this@MainActivity2, R.drawable.ic_baseline_add_a_photo_24)
+        }
+
+    }
+
+    private fun ActivityMainBinding.setUpObserver() {
+        calculatorViewModel.apply {
+            resultLiveData.observe(this@MainActivity2) { evaluationResult ->
+                progress.dismiss()
+                txtResult.text = "$evaluationResult"
+                validState(evaluationResult != null)
+            }
+
+            resultInputLiveData.observe(this@MainActivity2) { expression ->
+                if (expression != null){
+                    val parts = expression.split(Regex("[-+*/]"))
+                    val operator = expression[parts[0].length].toString()
+                    val num1 = parts[0]
+                    val num2 = parts[1]
+
+                    txtChar1.text = num1
+                    txtChar2.text = num2
+                    txtExpression.text = operator
+                }
+                validState(expression != null)
             }
         }
+    }
 
-        calculatorViewModel.resultLiveData.observe(this) { evaluationResult ->
-            progress.dismiss()
-            binding.edView.setText(" \nResult : $evaluationResult")
+    private fun ActivityMainBinding.setUpListener() {
+        val pickPictureFromFilesystem = resources.getBoolean(R.bool.pick_picture_from_filesystem)
+        val useBuiltinCamera = resources.getBoolean(R.bool.use_builtin_camera)
+
+        inputBtnImg.setOnClickListener {
+            if (pickPictureFromFilesystem){
+                if (checkStoragePermission()){
+                    pickImageGallery()
+                } else {
+                    requestPermissionStorage()
+                }
+            } else if (useBuiltinCamera){
+                if (checkCameraPermission()){
+                    pickImageCamera()
+                }
+                else {
+                    requestPermissionCamera()
+                }
+            }
         }
+    }
+
+    private fun ActivityMainBinding.validState(valid : Boolean){
+        if (valid){
+            txtError.isGone = true
+            viewValid.isVisible = true
+        } else {
+            txtError.isVisible = true
+            viewValid.isGone = true
+        }
+        txtError.text = "Failed recognize text or invalid expression"
     }
 
     private fun recognizeTextFromImage(){
@@ -114,33 +230,6 @@ class MainActivity2 : AppCompatActivity() {
         }
     }
 
-    private fun showInputImageDialog(){
-
-        val popupMenu = PopupMenu(this, binding.inputBtnImg)
-        popupMenu.menu.add(Menu.NONE, 1, 1, "Camera")
-        popupMenu.menu.add(Menu.NONE, 2, 3, "Gallery")
-
-        popupMenu.show()
-
-        popupMenu.setOnMenuItemClickListener {
-            val id = it.itemId
-            if (id == 1){
-                if (checkCameraPermission()){
-                    pickImageCamera()
-                }
-                else {
-                    requestPermissionCamera()
-                }
-            } else if (id == 2) {
-                if (checkStoragePermission()){
-                    pickImageGallery()
-                } else {
-                    requestPermissionStorage()
-                }
-            }
-            return@setOnMenuItemClickListener true
-        }
-    }
 
     private fun pickImageGallery(){
         val intent = Intent(Intent.ACTION_PICK)
@@ -154,8 +243,11 @@ class MainActivity2 : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK){
                 val data = result.data
                 imageUri = data!!.data
-
-                binding.imgView.setImageURI(imageUri)
+                binding.apply {
+                    binding.imgView.setImageURI(imageUri)
+                    recognizeTextFromImage()
+                    initView()
+                }
             } else {
                 showToast("Canceled...!")
             }
@@ -176,7 +268,12 @@ class MainActivity2 : AppCompatActivity() {
     private val cameraResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK){
-                binding.imgView.setImageURI(imageUri)
+                binding.apply {
+                    imgView.setImageURI(imageUri)
+                    recognizeTextFromImage()
+                    initView()
+                }
+
             } else {
                 showToast("Canceled...!")
             }

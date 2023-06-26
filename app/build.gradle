@@ -17,14 +17,102 @@ android {
     }
 
     buildTypes {
+        debug {
+            debuggable true
+            //minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }
+
     }
 
-    flavorDimensions "theme", "functionality"
+
+    applicationVariants.all { variant ->
+        def flavorName = variant.flavorName
+        def functionality = variant.productFlavors[0].name.toLowerCase()
+        def variantName = variant.name.toLowerCase()
+        def buildType = variant.buildType.name.toLowerCase()
+        if(flavorName == "redFilesystem"){
+            def apkName = "app-red-filesystem-${buildType}.apk"
+            variant.outputs.all {
+                outputFileName = apkName
+            }
+        } else if(flavorName == "redCamera"){
+            def apkName = "app-red-built-in-camera-${buildType}.apk"
+            variant.outputs.all {
+                outputFileName = apkName
+            }
+        } else if(flavorName == "greenFilesystem"){
+            def apkName = "app-green-filesystem-${buildType}.apk"
+            variant.outputs.all {
+                outputFileName = apkName
+            }
+        } else if(flavorName == "greenCamera"){
+            def apkName = "app-green-built-in-camera-${buildType}.apk"
+            variant.outputs.all {
+                outputFileName = apkName
+            }
+        }
+
+    }
+
+    flavorDimensions "theme"
+
+    productFlavors {
+        redFilesystem {
+            dimension "theme"
+            applicationId "com.deny.calculatorimage.redFilesystem"
+            resValue "string", "theme_name", "Red"
+            manifestPlaceholders = [appIcon: "@mipmap/ic_launcher_red"]
+            resValue "bool", "pick_picture_from_filesystem", "true"
+            resValue "bool", "use_builtin_camera", "false"
+        }
+        redCamera {
+            dimension "theme"
+            applicationId "com.deny.calculatorimage.redCamera"
+            resValue "string", "theme_name", "Red"
+            manifestPlaceholders = [appIcon: "@mipmap/ic_launcher_red"]
+            resValue "bool", "pick_picture_from_filesystem", "false"
+            resValue "bool", "use_builtin_camera", "true"
+        }
+        greenFilesystem {
+            dimension "theme"
+            applicationId "com.deny.calculatorimage.greenFilesystem"
+            resValue "string", "theme_name", "Green"
+            manifestPlaceholders = [appIcon: "@mipmap/ic_launcher_green"]
+            resValue "bool", "pick_picture_from_filesystem", "true"
+            resValue "bool", "use_builtin_camera", "false"
+        }
+        greenCamera {
+            dimension "theme"
+            applicationId "com.deny.calculatorimage.greenCamera"
+            resValue "string", "theme_name", "Green"
+            manifestPlaceholders = [appIcon: "@mipmap/ic_launcher_green"]
+            resValue "bool", "pick_picture_from_filesystem", "false"
+            resValue "bool", "use_builtin_camera", "true"
+        }
+    }
+
+    sourceSets {
+        redFilesystem {
+            res.srcDirs = ['src/red/res']
+        }
+        redCamera {
+            res.srcDirs = ['src/red/res']
+        }
+        greenFilesystem {
+            res.srcDirs = ['src/green/res']
+        }
+        greenCamera {
+            res.srcDirs = ['src/green/res']
+        }
+    }
+
+    /*flavorDimensions "theme", "functionality"
 
     // Define product flavors
     productFlavors {
@@ -67,7 +155,7 @@ android {
         useCamera {
             res.srcDirs = ['src/useCamera/res']
         }
-    }
+    }*/
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -104,5 +192,6 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
 
+    implementation 'com.airbnb.android:lottie:6.0.1'
 
 }

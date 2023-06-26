@@ -59,14 +59,14 @@ class MainActivity : AppCompatActivity() {
         binding.inputBtnImg.setOnClickListener {
             showInputImageDialog()
         }
-
-        binding.recognizeBtnImg.setOnClickListener {
-            if (imageUri == null){
-                showToast("Pick Image First")
-            } else {
-                recognizeTextFromImage()
-            }
-        }
+//
+//        binding.recognizeBtnImg.setOnClickListener {
+//            if (imageUri == null){
+//                showToast("Pick Image First")
+//            } else {
+//                recognizeTextFromImage()
+//            }
+//        }
     }
 
     private fun recognizeTextFromImage(){
@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                 val data = result.data
                 imageUri = data!!.data
 
-                binding.imgView.setImageURI(imageUri)
+//                binding.imgView.setImageURI(imageUri)
             } else {
                 showToast("Canceled...!")
             }
@@ -158,7 +158,7 @@ class MainActivity : AppCompatActivity() {
     private val cameraResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK){
-                binding.imgView.setImageURI(imageUri)
+//                binding.imgView.setImageURI(imageUri)
             } else {
                 showToast("Canceled...!")
             }
@@ -258,7 +258,7 @@ class MainActivity : AppCompatActivity() {
             Log.e("lines", "Result lines : ${blocks[i].text}")
             if (i == 0){
                 val result = calculate(blocks[i].text)
-                binding.edView.setText("Input in Line ${i+1} : ${blocks[i].text} \nResult : ${result}")
+//                binding.edView.setText("Input in Line ${i+1} : ${blocks[i].text} \nResult : ${result}")
             }
         }
 

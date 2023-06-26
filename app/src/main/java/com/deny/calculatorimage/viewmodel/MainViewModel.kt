@@ -21,8 +21,12 @@ import kotlinx.coroutines.withContext
 class MainViewModel: ViewModel() {
 
     private val recognizer: TextRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+
     private val _resultLiveData: MutableLiveData<Double> = MutableLiveData()
     val resultLiveData: LiveData<Double> = _resultLiveData
+
+    private val _resultInputLiveData: MutableLiveData<String> = MutableLiveData()
+    val resultInputLiveData: LiveData<String> = _resultInputLiveData
 
     fun processImage(image: InputImage) {
         viewModelScope.launch {
@@ -32,12 +36,15 @@ class MainViewModel: ViewModel() {
                 if (result != null) {
                     val expression = result.first
                     val evaluationResult = evaluateExpression(expression)
+                    _resultInputLiveData.postValue(expression)
                     _resultLiveData.postValue(evaluationResult)
                 } else {
+                    _resultInputLiveData.postValue(null)
                     _resultLiveData.postValue(null)
                 }
             } catch (e: MlKitException) {
                 Log.e("CalculatorViewModel", "Text recognition error: ${e.localizedMessage}")
+                _resultInputLiveData.postValue(null)
                 _resultLiveData.postValue(null)
             }
         }

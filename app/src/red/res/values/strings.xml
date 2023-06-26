@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Calculator Image (Red)</string>
+    <string name="app_name">Scan Me ! Calculator (Red)</string>
+    <string name="button_name">Add Input</string>
+    <string name="theme">Red</string>
 </resources>
