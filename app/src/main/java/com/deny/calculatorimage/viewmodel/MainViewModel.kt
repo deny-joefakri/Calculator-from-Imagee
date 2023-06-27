@@ -16,7 +16,9 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class MainViewModel: ViewModel() {
@@ -59,7 +61,7 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    private fun extractExpression(visionText: Text): Pair<String, Rect>? {
+    private fun extractExpression(visionText: Text): Pair<String, Rect>? = runBlocking {
         val blocks = visionText.textBlocks
         for (block in blocks) {
             val lines = block.lines
@@ -70,37 +72,53 @@ class MainViewModel: ViewModel() {
                     val elementText = element.text
                     // Ignore empty spaces
                     if (elementText.isNotBlank() && elementText.matches(Regex("[0-9+\\-*/x:]+"))) {
-                        // Replace 'x' with '*' and ':' with '/'
-                        val modifiedText = elementText.replace("x", "*").replace(":", "/")
-                        expressionBuilder.append(modifiedText)
+                        val modifiedText = async(Dispatchers.Default) {
+                            elementText.replace("x", "*").replace(":", "/")
+                        }
+                        expressionBuilder.append(modifiedText.await())
                     }
                 }
                 val expression = expressionBuilder.toString()
                 if (isExpression(expression)) {
-                    return Pair(expression, line.boundingBox!!)
+                    return@runBlocking Pair(expression, line.boundingBox!!)
                 }
             }
         }
-        return null
+        return@runBlocking null
+    }
+    private fun isExpression(text: String): Boolean = runBlocking {
+        val modifiedText = async(Dispatchers.Default) {
+            text.replace("x", "*").replace(":", "/")
+        }
+        val isMatching = async(Dispatchers.Default) {
+            modifiedText.await().matches(Regex("^\\d+[-+*/]\\d+$"))
+        }
+        isMatching.await()
     }
 
-    private fun isExpression(text: String): Boolean {
-        // Implement your own logic to determine if the text is a valid expression
-        val modifiedText = text.replace("x", "*").replace(":", "/")
-        return modifiedText.matches(Regex("^\\d+[-+*/]\\d+$"))
-    }
-
-    private fun evaluateExpression(expression: String): Double {
+    private fun evaluateExpression(expression: String): Double = runBlocking {
         val parts = expression.split(Regex("[-+*/]"))
         val operator = expression[parts[0].length].toString()
         val num1 = parts[0].toDouble()
         val num2 = parts[1].toDouble()
 
-        return when (operator) {
-            "+" -> num1 + num2
-            "-" -> num1 - num2
-            "*" -> num1 * num2
-            "/" -> num1 / num2
+        return@runBlocking when (operator) {
+            "+" -> {
+                val result = async(Dispatchers.Default) { num1 + num2 }
+                result.await()
+            }
+            "-" -> {
+                val result = async(Dispatchers.Default) { num1 - num2 }
+                result.await()
+            }
+            "*" -> {
+                val result = async(Dispatchers.Default) { num1 * num2 }
+                result.await()
+            }
+            "/" -> {
+                val result = async(Dispatchers.Default) { num1 / num2 }
+                result.await()
+            }
             else -> throw IllegalArgumentException("Invalid operator")
         }
     }
